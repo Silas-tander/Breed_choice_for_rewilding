@@ -11,4 +11,5 @@ rule all:
 
 include: "rules/gvcf_filter.smk"
 include: "rules/popgen.smk"
-incluyde: "rules/plink.smk"
+include: "rules/plink.smk"
+include: "rules/SNP_calling.smk"
