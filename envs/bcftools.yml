@@ -1,0 +1,20 @@
+name: bcftools
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - snakemake
+  - ca-certificates
+  - certifi
+  - openssl
+  - bcftools
+  - vcftools
+  - tabix
+  - polars
+  - pandas
+  - numpy
+  - scikit-learn
+  - gsl==2.5
+  - plumbum
+prefix: /home/silastander/mambaforge/envs/bcftools
