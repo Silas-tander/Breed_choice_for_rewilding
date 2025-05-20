@@ -1,141 +1,3 @@
-# rule hyper_params_gone:
-rule GOne:
-    params:
-        mapa = "results/variants/plink_files_novo/{interval}.map",
-        ped = "results/variants/plink_files_novo/{interval}.ped",
-        prefix = "{interval}",
-        input_params = "scripts/GONE/Linux/INPUT_PARAMETERS_FILE"
-    output:
-        # dir = directory("scripts/GONE/results_{population}/")
-        general = "scripts/GONE/chr_results_{interval}/OUTPUT_{interval}",
-        # Ne = "scripts/GONE/Linux/results_{params.prefix}/Output_Ne_all_final",
-        # d2 = "scripts/GONE/Linux/results_{params.prefix}/Output_d2_all_final"
-    threads: 1
-    resources:
-        mem_mb = 8000,
-        runtime = 120
-    shell:
-        '''
-        if [ ! -f scripts/GONE/Linux/$(basename {params.mapa}) ]; then
-            cp {params.mapa} scripts/GONE/Linux/
-        fi
-        if [ ! -f scripts/GONE/Linux/$(basename {params.ped}) ]; then
-            cp {params.ped} scripts/GONE/Linux/
-        fi
-        cd scripts/GONE/
-        mkdir -p chr_results_{params.prefix}/
-        cd Linux/
-        ./script_GONE.sh {params.prefix}
-        mv OUTPUT_{params.prefix} ../results_{params.prefix}/
-        mv Output_Ne_{params.prefix} ../results_{params.prefix}/
-        mv Output_d2_{params.prefix} ../results_{params.prefix}/
-        mv outfileHWD ../results_{params.prefix}/
-        mv seedfile ../results_{params.prefix}/
-        mv timefile ../results_{params.prefix}/
-        rm -r TEMPORARY_FILES/
-        rm {params.prefix}.map
-        rm {params.prefix}.ped
-        cd - # Returns to the previous directory
-        '''
-
-rule GOne_all:
-    params:
-        mapa = "results/variants/gathered_vcf/plink/{population}.map",
-        ped = "results/variants/gathered_vcf/plink/{population}.ped",
-        prefix = "{population}",
-        input_params = "scripts/GONE/Linux/INPUT_PARAMETERS_FILE"
-    output:
-        # dir = directory("scripts/GONE/results_{population}/")
-        general = "scripts/GONE/results_{population}/OUTPUT_{population}",
-        # Ne = "scripts/GONE/Linux/results_{params.prefix}/Output_Ne_all_final",
-        # d2 = "scripts/GONE/Linux/results_{params.prefix}/Output_d2_all_final"
-    threads: 1
-    resources:
-        mem_mb = 8000,
-        runtime = 120
-    shell:
-        '''
-        if [ ! -f scripts/GONE/Linux/$(basename {params.mapa}) ]; then
-            cp {params.mapa} scripts/GONE/Linux/
-        fi
-        if [ ! -f scripts/GONE/Linux/$(basename {params.ped}) ]; then
-            cp {params.ped} scripts/GONE/Linux/
-        fi
-        cd scripts/GONE/
-        mkdir -p results_{params.prefix}/
-        cd Linux/
-        ./script_GONE.sh {params.prefix}
-        mv OUTPUT_{params.prefix} ../results_{params.prefix}/
-        mv Output_Ne_{params.prefix} ../results_{params.prefix}/
-        mv Output_d2_{params.prefix} ../results_{params.prefix}/
-        mv outfileHWD ../results_{params.prefix}/
-        mv seedfile ../results_{params.prefix}/
-        mv timefile ../results_{params.prefix}/
-        rm -r TEMPORARY_FILES/
-        rm {params.prefix}.map
-        rm {params.prefix}.ped
-        cd - # Returns to the previous directory
-        '''
-
-rule GOne_bootstrap:
-    params:
-        mapa = "results/variants/gathered_vcf/plink/{population}.map",
-        ped = "results/variants/gathered_vcf/plink/{population}.ped",
-        prefix = "{population}",
-        input_params = "scripts/GONE/Linux/INPUT_PARAMETERS_FILE",
-        result_path = "results/GOne_results",
-        itr = "{n}"
-    output:
-        general = "results/GOne_results/{n}/results_{population}/OUTPUT_{population}",
-    threads: 1
-    resources:
-        mem_mb = 8000,
-        runtime = 120
-    shell:
-        '''
-        cp -R scripts/GONE/Linux/ {params.result_path}/{params.itr}/
-        if [ ! -f {params.result_path}/{params.itr}/Linux/$(basename {params.mapa}) ]; then
-            cp {params.mapa} {params.result_path}/{params.itr}/Linux/
-        fi
-        if [ ! -f {params.result_path}/{params.itr}/Linux/$(basename {params.ped}) ]; then
-            cp {params.ped} {params.result_path}/{params.itr}/Linux/
-        fi
-        cd {params.result_path}/{params.itr}
-        mkdir -p results_{params.prefix}/
-        cd Linux/
-        ./script_GONE.sh {params.prefix}
-        mv OUTPUT_{params.prefix} ../results_{params.prefix}/
-        mv Output_Ne_{params.prefix} ../results_{params.prefix}/
-        mv Output_d2_{params.prefix} ../results_{params.prefix}/
-        mv outfileHWD ../results_{params.prefix}/
-        mv seedfile ../results_{params.prefix}/
-        mv timefile ../results_{params.prefix}/
-        rm -r TEMPORARY_FILES/
-        rm {params.prefix}.map
-        rm {params.prefix}.ped
-        cd ..
-        rm -r Linux/
-        '''
-
-# rule AF_bcftools:
-#     input:
-#         vcf="results/gwf/gvcf_filt/{autosome}.GTmiss.rename.gvcf"
-#     output:
-#         af="results/ROH/bcftools/AF/{autosome}.freqs.tab.gz"
-#     threads: 3
-#     resources:
-#         mem_mb=3*8000,
-#         runtime=620
-#     params:
-#         samples_file="metadata/samples.tsv",  # Optional: file with sample names
-#     conda:
-#         "../envs/bcftools.yml"
-#     shell:
-#         '''
-#         bcftools query -f'%CHROM\t%POS\t%REF,%ALT\t%INFO/TAG\n' {input.vcf} | bgzip -c > {output.af}
-#         '''
-
-
 # Create a dictionary that maps autosomes to ECA names
 autosome_to_eca = dict(zip(config["autosomes_only"], config["ECA"]))
 
@@ -181,44 +43,6 @@ rule ROH_bcftools:
             -o {output.roh}
         '''
 
-# rule crispresso2:
-#     input:
-#         vcf="results/gwf/gvcf_filt/{autosome}.GTmiss.rename.gvcf"
-#     params:
-#         outdir = "results/CRISPR/",
-#         filename = "{autosome}"
-#     output:
-#         outy = "results/CRISPR/{autosome}"
-#     threads: 1
-#     resources:
-#         mem_mb = 40000,
-#         runtime = 120
-#     conda:
-#         "../envs/slurm_v2.yaml"
-#     shell:
-#         '''
-        
-#         '''
-
-rule calculate_snp_intervals:
-    input:
-        vcf = "results/gwf/gvcf_filt/{autosome}.GTmiss_wReps.gvcf"
-    params:
-        outdir = "results/ROH/GTmiss_wReps/",
-        filename = "{autosome}"
-    output:
-        outy = "results/ROH/GTmiss_wReps/{autosome}"
-    threads: 1
-    resources:
-        mem_mb = 40000,
-        runtime = 120
-    conda:
-        "../envs/slurm_v2.yaml"
-    shell:
-        '''
-        python scripts/python/interval_calculation.py {input.vcf} {params.outdir} {params.filename}
-        '''
-
 rule plot_genotypes:
     input:
         vcf = "results/gwf/gvcf_filt/{autosome}.GTmiss_wReps.gvcf"
@@ -243,23 +67,6 @@ rule plot_genotypes:
 ###
 # it does this automatically so don't bother
 ###
-
-# rule snpeff_download:
-#     output:
-#         # wildcard {reference} may be anything listed in `snpeff databases`
-#         directory("data/snpeff/EquCab3.0.99")
-#     log:
-#         "logs/snpeff/download/EquCab3.0.99.genome.log"
-#     params:
-#         reference="EquCab3.0.99.genome"
-#     threads: 1
-#     resources:
-#         mem_mb = 8000,
-#         runtime = 120
-#     conda:
-#         "../envs/snpeff.yml"
-#     shell:
-#         "java -Xmx8g -jar scripts/snpEff/snpEff.jar download -dataDir {output} {params.reference} {log}"
 
 rule snpEFF_annotation:
     input:
@@ -314,24 +121,6 @@ rule snpEFF_annotation_single:
         cd {params.snpeff_path}
         bcftools view {input.calls} | java -Xmx8g -jar snpEff.jar -v {params.db} > {params.chr_path}
         '''
-
-# rule genotype_diagnostics:
-#     input:
-#         vcf = "results/snpeff/{autosome}.ann.gvcf"
-#     params:
-#         chr = "{autosome}",
-#         outdir = "results/genotype_diagnostics/"
-#     output:
-#         genload = "results/genotype_diagnostics/{autosome}_genetic_load.csv",
-#         zygosi = "results/genotype_diagnostics/{autosome}__genotype_counts.csv"
-#     threads: 2
-#     resources:
-#         mem_mb = 20000,
-#         runtime = 620
-#     conda:
-#         "../envs/slurm_v2.yaml"
-#     shell:
-#         "python scripts/python/genotype_diagnostics.py {params.chr} {params.outdir} {input.vcf}"
 
 rule genotype_genetic_load:
     input:
@@ -424,26 +213,6 @@ rule deleterious_occupancy:
         "../envs/slurm_v2.yaml"
     shell:
         "python scripts/python/deleterious_occupancy.py {params.chr} {params.outdir} {input.vcf}"
-
-rule shared_polymorphism:
-    input:
-        vcf = "results/snpeff/{autosome}.ann.gvcf"
-    params:
-        chr = "{autosome}",
-        outdir = "results/genotype_matrices/"
-    output:
-        shared_pol = "results/genotype_matrices/{autosome}_heterozygous_shared_genotypes.csv",
-        hom = "results/genotype_matrices/{autosome}_homozygous_alt_shared_genotypes.csv",
-        alt = "results/genotype_matrices/{autosome}_homozygous_ref_shared_genotypes.csv",
-        miss = "results/genotype_matrices/{autosome}_missing_shared_genotypes.csv"
-    threads: 2
-    resources:
-        mem_mb = 20000,
-        runtime = 620
-    conda:
-        "../envs/slurm_v2.yaml"
-    shell:
-        "python scripts/python/shared_polymorphism.py {params.chr} {params.outdir} {input.vcf}"
 
 rule annotation_count:
     input:
