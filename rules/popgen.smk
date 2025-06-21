@@ -6,9 +6,7 @@ def get_recomb_map(wildcards):
     eca_chrom = autosome_to_eca[wildcards.autosome]  # Get ECA equivalent
     return f"data/recombination_maps/Averaged_{eca_chrom}_map.txt"
 
-# this has to be refined, how do I run with self calculated allele frequencies?
-
-rule ROH_bcftools:
+rule ROH_bcftools_dflt:
     input:
         vcf="results/gwf/gvcf_filt/{autosome}.GTmiss.rename.gvcf",
         raw_recomb_map=get_recomb_map,  # Uses function to resolve ECA chromosome
@@ -38,9 +36,7 @@ rule ROH_bcftools:
         bcftools roh \
             -m {output.fixed_recomb_map} \
             -M 100 \
-            -G 30 \
-            -e "GT-" \
-            -o {output.roh}
+            --AF-dflt 0.16 -o {output.roh}
         '''
 
 rule plot_genotypes:
