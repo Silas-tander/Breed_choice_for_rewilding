@@ -60,9 +60,6 @@ rule plot_genotypes:
 #EquCab3.0.99.reference : ftp://ftp.ensembl.org/pub/release-99/gtf/
 #EquCab3.0.99.retrieval_date : 2020-01-28
 
-###
-# it does this automatically so don't bother
-###
 
 rule snpEFF_annotation:
     input:
