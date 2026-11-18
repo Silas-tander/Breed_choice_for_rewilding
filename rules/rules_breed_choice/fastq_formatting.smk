@@ -1,5 +1,5 @@
 # Stage the in-house mols*/modoc* fastqs (outside this project) gzipped into data/ENA/ for ENA upload.
-# Not in rule all: snakemake fastq_formatting, then scripts/submit_ena_breed_choice.py
+# Not in rule all: snakemake fastq_formatting
 
 import csv
 import os
