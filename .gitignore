@@ -1,0 +1,7 @@
+# Inputs, outputs and Snakemake state stay out of the repository
+data/
+results/
+logs/
+.snakemake/
+__pycache__/
+*.pyc

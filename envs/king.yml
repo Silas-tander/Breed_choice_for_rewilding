@@ -1,0 +1,7 @@
+name: king
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bioconda::king

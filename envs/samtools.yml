@@ -1,0 +1,11 @@
+name: samtools
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - snakemake
+  - ca-certificates
+  - certifi
+  - openssl
+  - samtools

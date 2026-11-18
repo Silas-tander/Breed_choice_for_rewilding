@@ -541,4 +541,3 @@ dependencies:
   - zlib=1.2.13=hd590300_5
   - zlib-ng=2.0.7=h5eee18b_0
   - zstd=1.5.5=hfc55251_0
-prefix: /home/silastander/mambaforge/envs/slurm

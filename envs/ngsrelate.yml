@@ -1,0 +1,10 @@
+name: angsd
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bioconda::angsd
+  - bioconda::ngsrelate
+  - ca-certificates
+  - openssl

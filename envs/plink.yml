@@ -9,4 +9,3 @@ dependencies:
   - libgcc-ng=11.2.0=h1234567_1
   - libgomp=11.2.0=h1234567_1
   - plink=1.90b6.21=hec16e2b_2
-prefix: /home/silastander/mambaforge/envs/plink

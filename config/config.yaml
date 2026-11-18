@@ -1,0 +1,7 @@
+# Chromosome names: autosomes (+ PAR), autosomes only, and the matching ECA names of the recombination maps
+autosomes: [chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chr23, chr24, chr25, chr26, chr27, chr28, chr29,
+  chr30, chr31, PAR]
+autosomes_only: [chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chr23, chr24, chr25, chr26, chr27, chr28,
+  chr29, chr30, chr31]
+ECA: [ECA1, ECA2, ECA3, ECA4, ECA5, ECA6, ECA7, ECA8, ECA9, ECA10, ECA11, ECA12, ECA13, ECA14, ECA15, ECA16, ECA17, ECA18, ECA19, ECA20, ECA21, ECA22, ECA23, ECA24, ECA25, ECA26, ECA27, ECA28, ECA29, ECA30,
+  ECA31]

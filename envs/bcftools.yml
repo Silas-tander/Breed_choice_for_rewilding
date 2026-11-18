@@ -17,4 +17,3 @@ dependencies:
   - scikit-learn
   - gsl==2.5
   - plumbum
-prefix: /home/silastander/mambaforge/envs/bcftools
